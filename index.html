@@ -7,22 +7,74 @@
 <title>Vel_fx_edit</title>
 
 <style>
+/* THEME SYSTEM CONTROLS USING DYNAMIC CSS VARIABLES */
+:root {
+  --primary-gradient: linear-gradient(45deg, #ff00ff, #00ffff);
+  --bg-color: #000000;
+  --card-bg: #111111;
+  --text-color: #ffffff;
+  --accent-color: #00ffff;
+  --hover-glow: #ff00ff;
+  --secondary-glow: #00ffff;
+  --box-shadow-color: rgba(0, 255, 255, 0.4);
+  --card-shadow-color: rgba(0, 255, 255, 0.6);
+  --card-hover-shadow: rgba(255, 0, 255, 0.8);
+}
+
+/* THEME 2: ROYAL PURPLE & GOLD */
+[data-theme="royal"] {
+  --primary-gradient: linear-gradient(45deg, #ffd700, #8a2be2);
+  --bg-color: #0b0518;
+  --card-bg: #160f24;
+  --accent-color: #ffd700;
+  --hover-glow: #8a2be2;
+  --secondary-glow: #ffd700;
+  --box-shadow-color: rgba(255, 215, 0, 0.4);
+  --card-shadow-color: rgba(255, 215, 0, 0.5);
+  --card-hover-shadow: rgba(138, 43, 226, 0.9);
+}
+
+/* THEME 3: EMERALD MINT */
+[data-theme="emerald"] {
+  --primary-gradient: linear-gradient(45deg, #00ff87, #60efff);
+  --bg-color: #040d0a;
+  --card-bg: #0d1a15;
+  --accent-color: #00ff87;
+  --hover-glow: #60efff;
+  --secondary-glow: #00ff87;
+  --box-shadow-color: rgba(0, 255, 135, 0.4);
+  --card-shadow-color: rgba(0, 255, 135, 0.5);
+  --card-hover-shadow: rgba(96, 239, 255, 0.9);
+}
+
+/* THEME 4: CRIMSON DARK RED */
+[data-theme="crimson"] {
+  --primary-gradient: linear-gradient(45deg, #ff0055, #990000);
+  --bg-color: #0a0104;
+  --card-bg: #16040a;
+  --accent-color: #ff0055;
+  --hover-glow: #ffffff;
+  --secondary-glow: #ff0055;
+  --box-shadow-color: rgba(255, 0, 85, 0.4);
+  --card-shadow-color: rgba(255, 0, 85, 0.5);
+  --card-hover-shadow: rgba(255, 255, 255, 0.8);
+}
 
 *{
 margin:0;
 padding:0;
 box-sizing:border-box;
 font-family:Arial,sans-serif;
+transition: background 0.4s ease, color 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
 }
 
 body{
-background:#000;
-color:white;
+background: var(--bg-color);
+color: var(--text-color);
 overflow-x:hidden;
 }
 
-/* BACKGROUND */
-
+/* BACKGROUND PIPES ANIMATION */
 body::before{
 content:"";
 position:fixed;
@@ -31,29 +83,56 @@ left:0;
 width:200%;
 height:200%;
 background:
-radial-gradient(circle,#00ffff22 10%,transparent 10%),
-radial-gradient(circle,#ff00ff22 10%,transparent 10%);
+radial-gradient(circle, rgba(0,255,255,0.08) 10%,transparent 10%),
+radial-gradient(circle, rgba(255,0,255,0.08) 10%,transparent 10%);
 background-size:120px 120px;
 animation:bgMove 10s linear infinite;
 z-index:-1;
 }
 
 @keyframes bgMove{
-0%{
-transform:translate(0,0);
+0%{ transform:translate(0,0); }
+100%{ transform:translate(-120px,-120px); }
 }
-100%{
-transform:translate(-120px,-120px);
+
+/* THEME TOGGLE FAB FLOATING BUTTON */
+.theme-switcher-btn {
+position: fixed;
+top: 20px;
+right: 20px;
+z-index: 9999;
+background: var(--primary-gradient);
+border: 2px solid var(--text-color);
+color: #fff;
+padding: 12px 20px;
+border-radius: 30px;
+font-weight: bold;
+cursor: pointer;
+box-shadow: 0 4px 15px rgba(0,0,0,0.5), 0 0 10px var(--accent-color);
+display: flex;
+align-items: center;
+gap: 8px;
+font-size: 14px;
+text-transform: uppercase;
+letter-spacing: 1px;
 }
+
+.theme-switcher-btn:hover {
+transform: scale(1.05);
+box-shadow: 0 4px 20px rgba(0,0,0,0.6), 0 0 20px var(--hover-glow);
+}
+
+.theme-switcher-btn:active {
+transform: scale(0.95);
 }
 
 /* HEADER */
-
 header{
 padding:40px 20px;
 text-align:center;
-background:linear-gradient(45deg,#ff00ff,#00ffff);
-box-shadow:0 0 25px #00ffff;
+background: var(--primary-gradient);
+box-shadow:0 0 25px var(--secondary-glow);
+position: relative;
 }
 
 .logo{
@@ -61,31 +140,25 @@ width:220px;
 height:220px;
 border-radius:50%;
 object-fit:cover;
-border:5px solid #00ffff;
+border:5px solid var(--accent-color);
 padding:5px;
 background:#000;
 box-shadow:
-0 0 20px #00ffff,
-0 0 40px #ff00ff;
+0 0 20px var(--accent-color),
+0 0 40px var(--hover-glow);
 animation:float 3s ease-in-out infinite;
 }
 
 @keyframes float{
-0%{
-transform:translateY(0);
-}
-50%{
-transform:translateY(-10px);
-}
-100%{
-transform:translateY(0);
-}
+0%{ transform:translateY(0); }
+50%{ transform:translateY(-10px); }
+100%{ transform:translateY(0); }
 }
 
 header h1{
 font-size:48px;
 margin-top:20px;
-text-shadow:0 0 20px cyan;
+text-shadow:0 0 20px var(--accent-color);
 }
 
 header p{
@@ -94,8 +167,16 @@ font-size:20px;
 margin-bottom:25px;
 }
 
-/* FOLLOW BUTTON */
+/* ACTION BUTTONS GRID CONTAINER */
+.header-actions {
+display: flex;
+justify-content: center;
+gap: 20px;
+flex-wrap: wrap;
+margin-bottom: 10px;
+}
 
+/* FOLLOW BUTTON */
 .follow-btn{
 display:inline-block;
 padding:14px 32px;
@@ -105,9 +186,7 @@ text-decoration:none;
 font-size:18px;
 font-weight:bold;
 border-radius:14px;
-box-shadow:
-0 0 15px #0095f6,
-0 0 30px #0095f688;
+box-shadow: 0 0 15px #0095f6, 0 0 30px rgba(0,149,246,0.5);
 transition:0.3s;
 animation:pulse 2s infinite;
 }
@@ -117,20 +196,42 @@ transform:scale(1.08);
 background:#1877f2;
 }
 
+/* NEW TELEGRAM JOIN BUTTON & ICON DESIGN */
+.tg-btn {
+display: inline-flex;
+align-items: center;
+gap: 10px;
+padding: 14px 32px;
+background: #24A1DE;
+color: white;
+text-decoration: none;
+font-size: 18px;
+font-weight: bold;
+border-radius: 14px;
+box-shadow: 0 0 15px #24A1DE, 0 0 30px rgba(36,161,222,0.5);
+transition: 0.3s;
+animation: pulse 2s infinite 0.5s;
+}
+
+.tg-btn:hover {
+transform: scale(1.08);
+background: #1d84b5;
+box-shadow: 0 0 25px #24A1DE;
+}
+
+.tg-icon {
+width: 24px;
+height: 24px;
+fill: white;
+}
+
 @keyframes pulse{
-0%{
-transform:scale(1);
-}
-50%{
-transform:scale(1.05);
-}
-100%{
-transform:scale(1);
-}
+0%{ transform:scale(1); }
+50%{ transform:scale(1.05); }
+100%{ transform:scale(1); }
 }
 
 /* SEARCH */
-
 .search-box{
 display:flex;
 justify-content:center;
@@ -140,19 +241,20 @@ margin:40px 20px;
 .search-box input{
 width:300px;
 padding:15px;
-border:none;
+border:2px solid var(--accent-color);
+border-right: none;
 outline:none;
 font-size:18px;
 border-radius:12px 0 0 12px;
-background:#111;
-color:white;
+background: var(--card-bg);
+color: var(--text-color);
 }
 
 .search-box button{
 padding:15px 25px;
 border:none;
-background:#00ffff;
-color:black;
+background: var(--accent-color);
+color: black;
 font-size:18px;
 font-weight:bold;
 cursor:pointer;
@@ -161,23 +263,22 @@ transition:0.3s;
 }
 
 .search-box button:hover{
-background:#ff00ff;
-color:white;
+background: var(--hover-glow);
+color: white;
+box-shadow: 0 0 15px var(--hover-glow);
 }
 
 /* SECTION TITLE */
-
 .section-title{
 text-align:center;
 font-size:40px;
 margin-top:50px;
 margin-bottom:30px;
-color:#00ffff;
-text-shadow:0 0 20px #00ffff;
+color: var(--accent-color);
+text-shadow:0 0 20px var(--box-shadow-color);
 }
 
-/* CARD AREA - UPGRADED TO MODERN RESPONSIVE GRID */
-
+/* CARD AREA */
 .card-area{
 display: grid;
 grid-template-columns: repeat(auto-fit, minmax(320px, max-content));
@@ -188,47 +289,39 @@ width: 100%;
 }
 
 /* CARD */
-
 .card{
 width:320px;
-background:#111;
+background: var(--card-bg);
 border-radius:20px;
 overflow:hidden;
-box-shadow:0 0 25px #00ffff;
-transition:0.4s;
+box-shadow:0 0 25px var(--card-shadow-color);
+transition:0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 animation:fadeUp 1s ease;
 display: flex;
 flex-direction: column;
+border: 1px solid rgba(255,255,255,0.05);
 }
 
 @keyframes fadeUp{
-from{
-opacity:0;
-transform:translateY(50px);
-}
-to{
-opacity:1;
-transform:translateY(0);
-}
+from{ opacity:0; transform:translateY(50px); }
+to{ opacity:1; transform:translateY(0); }
 }
 
 .card:hover{
-transform:translateY(-10px) scale(1.05);
-box-shadow:0 0 35px #ff00ff;
+transform:translateY(-10px) scale(1.04);
+box-shadow:0 0 35px var(--card-hover-shadow);
 }
 
-/* IMAGE - UPDATED FOR 3:4 RATIO */
-
+/* IMAGE - 3:4 RATIO */
 .card img{
 width:100%;
 aspect-ratio: 3 / 4;
 object-fit:cover;
-border-bottom:3px solid #00ffff;
+border-bottom:3px solid var(--accent-color);
 object-position: center top;
 }
 
 /* CONTENT */
-
 .card-content{
 padding:20px;
 text-align:center;
@@ -240,7 +333,7 @@ justify-content: space-between;
 
 .card-content h2{
 font-size:28px;
-color:#00ffff;
+color: var(--accent-color);
 margin-bottom:10px;
 }
 
@@ -251,54 +344,52 @@ margin-bottom:20px;
 }
 
 /* BUTTONS */
-
 .open-btn{
 display:inline-block;
 padding:12px 25px;
-background:#ff00ff;
+background: var(--hover-glow);
 color:white;
 text-decoration:none;
 border-radius:12px;
 font-weight:bold;
 transition:0.3s;
-box-shadow:0 0 20px #ff00ff;
+box-shadow:0 0 20px var(--hover-glow);
 margin-top: auto;
 }
 
 .open-btn:hover{
 transform:scale(1.1);
-background:#00ffff;
+background: var(--accent-color);
 color:black;
+box-shadow: 0 0 20px var(--accent-color);
 }
 
 .copy-btn{
 padding:14px 25px;
 border:none;
-background:linear-gradient(45deg,#00ffff,#ff00ff);
+background: var(--primary-gradient);
 color:white;
 font-size:16px;
 font-weight:bold;
 border-radius:12px;
 cursor:pointer;
 transition:0.3s;
-box-shadow:
-0 0 15px #00ffff,
-0 0 25px #ff00ff;
+box-shadow: 0 4px 15px rgba(0,0,0,0.3);
 width: 100%;
 }
 
 .copy-btn:hover{
 transform:scale(1.05);
+box-shadow:0 0 25px var(--hover-glow);
 }
 
 /* PROMPT BOX */
-
 .prompt-box{
 width:100%;
 height:140px;
 background:#000;
-color:#00ffff;
-border:2px solid #00ffff;
+color: var(--accent-color);
+border:2px solid var(--accent-color);
 border-radius:15px;
 padding:15px;
 font-size:15px;
@@ -308,24 +399,30 @@ resize:none;
 }
 
 /* FOOTER */
-
 footer{
 margin-top:60px;
 padding:20px;
 text-align:center;
-background:#111;
-box-shadow:0 0 20px #00ffff;
+background: var(--card-bg);
+box-shadow:0 0 20px var(--box-shadow-color);
+border-top: 1px solid rgba(255,255,255,0.05);
 }
 
 .insta{
-color:#00ffff;
+color: var(--accent-color);
 text-decoration:none;
 font-weight:bold;
 }
 
-/* MOBILE */
-
+/* MOBILE RESPONSIVENESS */
 @media(max-width:600px){
+.theme-switcher-btn {
+top: auto;
+bottom: 20px;
+right: 20px;
+padding: 10px 16px;
+font-size: 12px;
+}
 
 .logo{
 width:160px;
@@ -355,19 +452,37 @@ width:60%;
 .search-box button{
 width:40%;
 }
-
+.header-actions {
+flex-direction: column;
+align-items: center;
+gap: 12px;
 }
-
+.follow-btn, .tg-btn {
+width: 80%;
+text-align: center;
+justify-content: center;
+}
+}
 </style>
 </head>
 
 <body>
 
+<button class="theme-switcher-btn" onclick="toggleTheme()">🎨 Change Theme</button>
+
 <header>
 <img class="logo" src="my logo Vel_fx_edit.png" alt="Logo">
 <h1>Vel_fx_edit</h1>
 <p>Instagram Alight Motion & AI Prompt Website</p>
-<a class="follow-btn" href="https://www.instagram.com/Vel_fx_edit/" target="_blank">FOLLOW</a>
+<div class="header-actions">
+  <a class="follow-btn" href="https://www.instagram.com/Vel_fx_edit/" target="_blank">FOLLOW</a>
+  <a class="tg-btn" href="https://t.me/Vel_fx_edit" target="_blank">
+    <svg class="tg-icon" viewBox="0 0 24 24">
+      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.2-.08-.06-.19-.04-.27-.02-.12.02-1.96 1.24-5.54 3.65-.52.36-1 .53-1.42.52-.47-.01-1.37-.26-2.03-.48-.82-.27-1.47-.42-1.42-.88.03-.24.35-.49.97-.74 3.79-1.65 6.32-2.74 7.59-3.27 3.61-1.51 4.36-1.77 4.85-1.78.11 0 .35.03.5.16.13.12.17.28.19.4z"/>
+    </svg>
+    JOIN TELEGRAM
+  </a>
+</div>
 </header>
 
 <div class="search-box">
@@ -393,7 +508,7 @@ width:40%;
 </footer>
 
 <script>
-/* DATA SECTIONS */
+/* DATA SECTIONS - UNCHANGED AND PRESERVED EXACTLY */
 const videos = [
 {code:"B01", title:"Boy Birthday Edit", thumbnail:"Thumnail1.png", description:"Amazing Birthday Edit", link:"https://alightcreative.com/"},
 {code:"B02", title:"Girl Birthday Edit", thumbnail:"Girl birthdat thumnail3.jpeg", description:"New Reel Editing Project", link:"https://alightcreative.com/am/share/u/dnwk7emVc6NgGq5ftKToRPNXzyr2/p/z1VhQGOnjk-7afa5f713fc3d4f4"}
@@ -743,19 +858,18 @@ Aspect Ratio: 3:4 Plain text.
 Use the uploaded woman's exact face, smile, facial structure, skin tone, eyes, nose, and expression without alteration. 
 Preserve identity perfectly while transforming only the outfit, hairstyle styling, background, and poster composition..`
 },
-  {
-  code:"GPR11",
-  title:"Bridal Poster",
-  thumbnail:"Bridal poster.jpg",
-  prompt:`realistic cinematic bridal poster of a beautiful Indian WOMAN(USE REFERENCE IMAGES FOR 100% FACIAL ACCURACY) WEARING A LUXURIOUS magenta lehenga saree with intricate gold embroidery, RUBY AND GOLD JEWELRY, SEATED gracefully in the center, warm smile, voluminous no cleavage dramatic collage COMPOSITION WITH FIVE MONOCHROME PORTRAITS OF THE SAME WOMAN SURROUNDING HER, LARGE FADED EYES IN background, crimson red color grading, dark moody atmosphere, MOVIE POSTER AESTHETIC, HIGH contrast lighting, floating PARTICLES, SUBTLE, 8K. 3:4.`
-  },
-
-  {
-    code:"GPR12",
-    title:"College Admissions",
-    thumbnail:"College Admission.jpg",
-    prompt:`Create a modern and cinematic graphic design poster for college admissions. Use a large soft-focus portrait of a smiling Indian girl in traditional saree as the background, looking sideways naturally. Add a full-body cutout of the same girl standing in front wearing a stylish white saree with colorful floral patterns. Place huge cracked stone-text typography in the center with the word "YOUR NAME". Background should have watercolor texture, floral elements, soft greenery, and warm sunlight tones for a dreamy aesthetic. Add professional creative design vibes with depth, shadows, and photo manipulation effects. Add text: "Butterfly queen" in elegant handwritten typography at the bottom-right. Poster style should look premium, realistic, eye-catching, and suitable for social media promotion. Aspect ratio: portrait 3:4.`
-  },
+{
+code:"GPR11",
+title:"Bridal Poster",
+thumbnail:"Bridal poster.jpg",
+prompt:`realistic cinematic bridal poster of a beautiful Indian WOMAN(USE REFERENCE IMAGES FOR 100% FACIAL ACCURACY) WEARING A LUXURIOUS magenta lehenga saree with intricate gold embroidery, RUBY AND GOLD JEWELRY, SEATED gracefully in the center, warm smile, voluminous no cleavage dramatic collage COMPOSITION WITH FIVE MONOCHROME PORTRAITS OF THE SAME WOMAN SURROUNDING HER, LARGE FADED EYES IN background, crimson red color grading, dark moody atmosphere, MOVIE POSTER AESTHETIC, HIGH contrast lighting, floating PARTICLES, SUBTLE, 8K. 3:4.`
+},
+{
+code:"GPR12",
+title:"College Admissions",
+thumbnail:"College Admission.jpg",
+prompt:`Create a modern and cinematic graphic design poster for college admissions. Use a large soft-focus portrait of a smiling Indian girl in traditional saree as the background, looking sideways naturally. Add a full-body cutout of the same girl standing in front wearing a stylish white saree with colorful floral patterns. Place huge cracked stone-text typography in the center with the word "YOUR NAME". Background should have watercolor texture, floral elements, soft greenery, and warm sunlight tones for a dreamy aesthetic. Add professional creative design vibes with depth, shadows, and photo manipulation effects. Add text: "Butterfly queen" in elegant handwritten typography at the bottom-right. Poster style should look premium, realistic, eye-catching, and suitable for social media promotion. Aspect ratio: portrait 3:4.`
+},
 ];
 
 /* ENGINE LOGIC */
@@ -820,6 +934,22 @@ navigator.clipboard.writeText(text.value);
 alert("Prompt Copied!");
 }
 
+/* INTERACTIVE DYNAMIC COLOR THEME CONTROLLER ENGINE */
+const themesList = ["cyberpunk", "royal", "emerald", "crimson"];
+let currentThemeIndex = 0;
+
+function toggleTheme() {
+  currentThemeIndex = (currentThemeIndex + 1) % themesList.length;
+  const activeTheme = themesList[currentThemeIndex];
+  
+  if (activeTheme === "cyberpunk") {
+    document.documentElement.removeAttribute("data-theme");
+  } else {
+    document.documentElement.setAttribute("data-theme", activeTheme);
+  }
+}
+
+// Initialize Render Call
 refreshAllSections(videos, bothPrompts, boyPrompts, girlPrompts);
 </script>
 </body>
